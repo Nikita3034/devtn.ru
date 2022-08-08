@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
 
     // var widthСharacter = 9.03;
-    var widthСharacter = 8.25;
+    var widthCharacter = 8.25;
 
     var historyKey = -1;
 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function moveCursorLeft() {
         var current = parseFloat(getComputedStyle(getLastCursor()).marginLeft, 10);
-        var moveWidth = current - widthСharacter;
+        var moveWidth = current - widthCharacter;
 
         if (defaultBeforeTextWidth < moveWidth) {
             getLastCursor().style.marginLeft = moveWidth + 'px';
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function moveCursorRight() {
         var current = parseFloat(getComputedStyle(getLastCursor()).marginLeft, 10);
-        var moveWidth = current + widthСharacter;
+        var moveWidth = current + widthCharacter;
 
         if (defaultLineWidth > moveWidth) {
             getLastCursor().style.marginLeft = moveWidth + 'px';
