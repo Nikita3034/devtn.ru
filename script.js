@@ -172,55 +172,53 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function historyNext() {
-        var historyArr = getHistory();
-
-        if (typeof historyArr[historyKey] !== "undefined") {
-
-            if (
-                typeof historyArr[historyKey + 1] !== "undefined" &&
-                getLastCommand().textContent == historyArr[historyKey]
-            ) {
-                historyKey++;
-            }
-
-            getLastCommand().textContent = historyArr[historyKey];
-
-            if (historyKey < historyArr.length - 1) {
-                historyKey++;
-            }
-
-            getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
-
-            for (var i = 0; i < getLastCommand().textContent.length; i++) {
-                moveCursorRight();
-            }
-        }
-    }
-
     function historyPrev() {
         var historyArr = getHistory();
 
-        if (typeof historyArr[historyKey] !== "undefined") {
+        if (historyKey == historyArr.length) {
+            historyKey--;
+        }
 
-            if (
-                typeof historyArr[historyKey - 1] !== "undefined" &&
-                getLastCommand().textContent == historyArr[historyKey]
-            ) {
-                historyKey--;
-            }
+        if (
+            typeof historyArr[historyKey - 1] !== "undefined" &&
+            getLastCommand().textContent == historyArr[historyKey]
+        ) {
+            historyKey--;
+        }
 
-            getLastCommand().textContent = historyArr[historyKey];
+        getLastCommand().textContent = historyArr[historyKey];
 
-            if (historyKey > 0 && historyKey < historyArr.length) {
-                historyKey--;
-            }
+        if (historyKey > 0 && historyKey < historyArr.length) {
+            historyKey--;
+        }
 
-            getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
+        getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
 
-            for (var i = 0; i < getLastCommand().textContent.length; i++) {
-                moveCursorRight();
-            }
+        for (var i = 0; i < getLastCommand().textContent.length; i++) {
+            moveCursorRight();
+        }
+    }
+
+    function historyNext() {
+        var historyArr = getHistory();
+
+        if (
+            typeof historyArr[historyKey + 1] !== "undefined" &&
+            getLastCommand().textContent == historyArr[historyKey]
+        ) {
+            historyKey++;
+        }
+
+        getLastCommand().textContent = typeof historyArr[historyKey] !== "undefined" ? historyArr[historyKey] : "";
+
+        if (historyKey < historyArr.length) {
+            historyKey++;
+        }
+
+        getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
+
+        for (var i = 0; i < getLastCommand().textContent.length; i++) {
+            moveCursorRight();
         }
     }
 
