@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target !== this) {
             return;
         }
-        
+
         var coords = getCoords(terminal);
         var shiftX = event.pageX - coords.left;
         var shiftY = event.pageY - coords.top;
@@ -258,6 +258,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.onmousemove = function(event) {
             moveAt(event);
+
+            clearInterval(intervalFlashCursor);
+            getLastCursor().style.border = borderStyle;
         };
 
         bar.onmouseup = function() {
