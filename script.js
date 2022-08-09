@@ -1,13 +1,9 @@
-document.addEventListener('DOMContentLoaded', function(){
-
-    // var widthСharacter = 9.03;
-    var widthCharacter = 8.25;
-
+document.addEventListener('DOMContentLoaded', function() {
+    // key for out history item
     var historyKey = -1;
 
+    // create history array in json
     localStorage.setItem('history', '[]');
-
-    var currentLengthInput = 0;
 
     var intervalFlashCursor = null;
 
@@ -19,8 +15,19 @@ document.addEventListener('DOMContentLoaded', function(){
         '<span class="cursor"></span>' +
     '</div>';
 
-    var defaultBeforeTextWidth = document.querySelector('.before').offsetWidth;
-    var defaultLineWidth = document.querySelector('.line').offsetWidth;
+    var borderStyle = '4px solid #fff';
+
+    var bar = document.querySelector('.bar');
+    var terminal = document.querySelector('.terminal');
+    var screen = document.querySelector('.screen');
+
+    function getLastLine() {
+        return document.querySelectorAll('.line')[document.querySelectorAll('.line').length - 1];
+    }
+
+    function getLastBefore() {
+        return document.querySelectorAll('.before')[document.querySelectorAll('.before').length - 1];
+    }
 
     function getLastCommand() {
         return document.querySelectorAll('.command')[document.querySelectorAll('.command').length - 1];
@@ -30,7 +37,14 @@ document.addEventListener('DOMContentLoaded', function(){
         return document.querySelectorAll('.cursor')[document.querySelectorAll('.cursor').length - 1];
     }
 
-    init();
+    function getWidthCharacter() {
+        var widthCharacter = getLastCommand().offsetWidth / getLastCommand().textContent.length;
+        return !isNaN(widthCharacter) ? widthCharacter : 0;
+    }
+
+    function getLastBeforeWidth() {
+        return getLastBefore().offsetWidth + parseFloat(getComputedStyle(getLastLine()).gridGap, 10);
+    }
 
     document.querySelector('.button.green').addEventListener('click', event => {
         if (document.querySelector('.terminal.full-window') !== null) {
@@ -43,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function(){
     document.addEventListener('click', event => {
 
         clearInterval(intervalFlashCursor);
-        getLastCursor().style.border = '4px solid #fff';
+        getLastCursor().style.border = borderStyle;
 
         if (event.target.closest('.terminal')) {
             getLastCommand().focus();
@@ -75,31 +89,31 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     function init() {
-        currentLengthInput = 0;
         initMoveMouseCommand();
 
         clearInterval(intervalFlashCursor);
         flashCursor();
 
         getLastCommand().focus();
+
+        // default margin left for cursor
+        getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
     }
 
     function initMoveMouseCommand() {
         getLastCommand().addEventListener('input', event => {
-            if (event.target.textContent.length > currentLengthInput ) {
+            if ((getLastBeforeWidth() + getLastCommand().offsetWidth) > parseFloat(getLastCursor().style.marginLeft, 10)) {
                 moveCursorRight();
             } else {
                 moveCursorLeft();
             }
-
-            currentLengthInput = event.target.textContent.length;
         });
     }
 
     function flashCursor() {
         intervalFlashCursor = setInterval(function () {
             if (getLastCursor().style.border === 'none') {
-                getLastCursor().style.border = '4px solid #fff';
+                getLastCursor().style.border = borderStyle;
             } else {
                 getLastCursor().style.border = 'none';
             }
@@ -108,18 +122,25 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function moveCursorLeft() {
         var current = parseFloat(getComputedStyle(getLastCursor()).marginLeft, 10);
-        var moveWidth = current - widthCharacter;
+        var moveWidth;
 
-        if (defaultBeforeTextWidth < moveWidth) {
+        if (getWidthCharacter() !== 0) {
+            moveWidth = current - getWidthCharacter();
+        } else {
+            moveWidth = getLastBefore().offsetWidth + parseFloat(getComputedStyle(getLastLine()).gridGap, 10);
+        }
+
+        if (getLastBefore().offsetWidth < moveWidth) {
             getLastCursor().style.marginLeft = moveWidth + 'px';
         }
     }
 
     function moveCursorRight() {
         var current = parseFloat(getComputedStyle(getLastCursor()).marginLeft, 10);
-        var moveWidth = current + widthCharacter;
+        var moveWidth = current + getWidthCharacter();
+        var maxWidth = getLastBefore().offsetWidth + getLastCommand().offsetWidth + getWidthCharacter();
 
-        if (defaultLineWidth > moveWidth) {
+        if (maxWidth > moveWidth) {
             getLastCursor().style.marginLeft = moveWidth + 'px';
         }
     }
@@ -129,21 +150,19 @@ document.addEventListener('DOMContentLoaded', function(){
 
         addToHistory();
 
-        document.querySelector('.screen .cursor').remove();
-        document.querySelector('.screen').innerHTML += lineHTML;
+        getLastCursor().style.border = 'none';
+        screen.innerHTML += lineHTML;
 
         init();
     }
 
-    function getHistory()
-    {
+    function getHistory() {
         var history = localStorage.getItem('history');
         return JSON.parse(history);
     }
 
-    function addToHistory()
-    {
-        var lastCommand = getLastCommand().innerHTML;
+    function addToHistory() {
+        var lastCommand = getLastCommand().textContent;
 
         if (lastCommand != '') {
             var historyArr = getHistory();
@@ -160,17 +179,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if (
                 typeof historyArr[historyKey + 1] !== "undefined" &&
-                getLastCommand().innerHTML == historyArr[historyKey]
+                getLastCommand().textContent == historyArr[historyKey]
             ) {
                 historyKey++;
             }
 
-            getLastCommand().innerHTML = historyArr[historyKey];
+            getLastCommand().textContent = historyArr[historyKey];
+
             if (historyKey < historyArr.length - 1) {
                 historyKey++;
             }
 
-            getLastCursor().style.marginLeft = defaultBeforeTextWidth + 5 + 'px';
+            getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
 
             for (var i = 0; i < getLastCommand().textContent.length; i++) {
                 moveCursorRight();
@@ -185,18 +205,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
             if (
                 typeof historyArr[historyKey - 1] !== "undefined" &&
-                getLastCommand().innerHTML == historyArr[historyKey]
+                getLastCommand().textContent == historyArr[historyKey]
             ) {
                 historyKey--;
             }
 
-            getLastCommand().innerHTML = historyArr[historyKey];
+            getLastCommand().textContent = historyArr[historyKey];
 
             if (historyKey > 0 && historyKey < historyArr.length) {
                 historyKey--;
             }
 
-            getLastCursor().style.marginLeft = defaultBeforeTextWidth + 5 + 'px';
+            getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
 
             for (var i = 0; i < getLastCommand().textContent.length; i++) {
                 moveCursorRight();
@@ -205,16 +225,13 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     // move terminal animation
-    var bar = document.querySelector('.bar');
-    var terminal = document.querySelector('.terminal');
-
     bar.onmousedown = function(event) {
-
+        // not full window
         if (terminal.classList.contains('full-window')) {
             return;
         }
 
-        // if not kleft click mouse
+        // not left click mouse
         if (event.which !== 1) {
             return;
         }
@@ -260,4 +277,6 @@ document.addEventListener('DOMContentLoaded', function(){
             left: box.left + pageXOffset
         };
     }
+
+    init();
 });

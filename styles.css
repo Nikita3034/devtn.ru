@@ -157,7 +157,6 @@ body {
     margin-top: 6px;
 }
 .cursor {
-    margin-left: 145px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
