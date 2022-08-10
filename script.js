@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 moveCursorRight();
                 break;
             case event.keyCode === 38:
-                historyPrev();
+                historyPrev(event);
                 break;
             case event.keyCode === 40:
                 historyNext();
@@ -168,52 +168,66 @@ document.addEventListener('DOMContentLoaded', function() {
             var historyArr = getHistory();
             historyArr.push(lastCommand);
             localStorage.setItem('history', JSON.stringify(historyArr));
-            historyKey = historyArr.length - 1;
+            historyKey = historyArr.length;
         }
     }
 
-    function historyPrev() {
+    function historyPrev(event) {
+        event.preventDefault();
+
         var historyArr = getHistory();
 
-        if (historyKey == historyArr.length) {
+        if (historyKey >= 0) {
             historyKey--;
         }
 
-        if (
-            typeof historyArr[historyKey - 1] !== "undefined" &&
-            getLastCommand().textContent == historyArr[historyKey]
-        ) {
-            historyKey--;
+        if (typeof historyArr[historyKey] === "undefined") {
+            historyKey++;
         }
 
         getLastCommand().textContent = historyArr[historyKey];
-
-        if (historyKey > 0 && historyKey < historyArr.length) {
-            historyKey--;
-        }
 
         getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
 
         for (var i = 0; i < getLastCommand().textContent.length; i++) {
             moveCursorRight();
         }
+
+        positionCursorToEndString();
+    }
+
+    function positionCursorToEndString() {
+        // Creates range object
+        var setpos = document.createRange();
+          
+        // Creates object for selection
+        var set = window.getSelection();
+          
+        // Set start position of range
+        setpos.setStart(getLastCommand().childNodes[0], getLastCommand().textContent.length);
+          
+        // Collapse range within its boundary points
+        // Returns boolean
+        setpos.collapse(true);
+          
+        // Remove all ranges set
+        set.removeAllRanges();
+          
+        // Add range with respect to range object.
+        set.addRange(setpos);
+          
+        // Set cursor on focus
+        getLastCommand().focus();
     }
 
     function historyNext() {
         var historyArr = getHistory();
 
-        if (
-            typeof historyArr[historyKey + 1] !== "undefined" &&
-            getLastCommand().textContent == historyArr[historyKey]
-        ) {
+        if (historyKey < historyArr.length) {
             historyKey++;
         }
 
         getLastCommand().textContent = typeof historyArr[historyKey] !== "undefined" ? historyArr[historyKey] : "";
-
-        if (historyKey < historyArr.length) {
-            historyKey++;
-        }
 
         getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
 
