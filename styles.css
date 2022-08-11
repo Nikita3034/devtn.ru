@@ -4,7 +4,7 @@ html {
 body {
     height: 100%;
     overflow: hidden;
-    background-color: #fff;
+    background-color: grey;
     position: relative;
     font-family: monospace;
     margin:0;
@@ -25,6 +25,9 @@ body {
     transform: none;
     left: 0 !important;
     top: 0 !important;
+}
+.terminal.hide {
+    display: none;
 }
 .bar {
     text-align: center;
@@ -92,15 +95,16 @@ body {
     background-color: #22ca3e;
 }
 .button.green:hover .triangle1,
-.button.green:hover .triangle2 {
+.button.green:hover .triangle2,
+.button.green.full-window:hover .triangle1,
+.button.green.full-window:hover .triangle2 {
     display: block;
 }
 .triangle1 {
     display: none;
     position: absolute;
-    left: 48%;
-    top: 48%;
-    transform: translate(-50%, -50%);
+    left: 30%;
+    top: 30%;
     width: 5px;
     height: 5px;
     background-color: #1f252f;
@@ -109,13 +113,37 @@ body {
 .triangle2 {
     display: none;
     position: absolute;
-    left: 58%;
-    top: 58%;
-    transform: translate(-50%, -50%);
+    left: 35%;
+    top: 35%;
     width: 5px;
     height: 5px;
     background-color: #1f252f;
     clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.button.green.full-window .triangle1 {
+    display: none;
+    position: absolute;
+    left: 15%;
+    top: 15%;
+    transform: rotate(180deg);
+    width: 5px;
+    height: 5px;
+    background-color: #1f252f;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.button.green.full-window .triangle2 {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: rotate(180deg);
+    width: 5px;
+    height: 5px;
+    background-color: #1f252f;
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+}
+.info {
+    color: #fff;
 }
 .screen {
     background-color: #2a313e;
@@ -170,4 +198,26 @@ body {
 .command:focus {
     outline: none;
     caret-color: transparent;
+}
+.app-bar {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: #000;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 5px 5px 5px 0 rgb(0 0 0 / 25%);
+    cursor: pointer;
+}
+.app-bar.hide {
+    display: none;
+}
+.app-bar .icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: #fff;
 }

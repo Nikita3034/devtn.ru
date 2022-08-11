@@ -46,22 +46,56 @@ document.addEventListener('DOMContentLoaded', function() {
         return getLastBefore().offsetWidth + parseFloat(getComputedStyle(getLastLine()).gridGap, 10);
     }
 
-    document.querySelector('.button.green').addEventListener('click', event => {
+    // button close
+    document.querySelector('.button.red').addEventListener('click', closeTerminal);
+
+    function closeTerminal() {
+        document.querySelector('.terminal').remove();
+    }
+
+    // button hide
+    document.querySelector('.button.yellow').addEventListener('click', openHideTerminal);
+    document.querySelector('.app-bar').addEventListener('click', openHideTerminal);
+
+    function openHideTerminal() {
+        if (document.querySelector('.terminal.hide') !== null) {
+            document.querySelector('.terminal').classList.remove('hide');
+            document.querySelector('.app-bar').classList.add('hide');
+
+            getLastCommand().focus();
+            positionCursorToEndString();
+        } else {
+            document.querySelector('.terminal').classList.add('hide');
+            document.querySelector('.app-bar').classList.remove('hide');
+        }
+    }
+
+    // button open to full window
+    document.querySelector('.button.green').addEventListener('click', openToFullWindow);
+
+    function openToFullWindow() {
         if (document.querySelector('.terminal.full-window') !== null) {
             document.querySelector('.terminal').classList.remove('full-window');
+            document.querySelector('.bar .button.green').classList.remove('full-window');
         } else {
             document.querySelector('.terminal').classList.add('full-window');
+            document.querySelector('.bar .button.green').classList.add('full-window');
         }
-    });
 
-    document.addEventListener('click', event => {
+        positionCursorToEndString();
+    }
 
+    document.querySelector('div:not(.app-bar)').addEventListener('click', event => {
         clearInterval(intervalFlashCursor);
-        getLastCursor().style.border = borderStyle;
 
-        if (event.target.closest('.terminal')) {
-            getLastCommand().focus();
-            flashCursor();
+        if (document.querySelector('.terminal') !== null) {
+            getLastCursor().style.border = borderStyle;
+
+            if (event.target.closest('.terminal')) {
+                clearInterval(intervalFlashCursor);
+                getLastCommand().focus();
+                flashCursor();
+            }
         }
     });
 
@@ -197,27 +231,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function positionCursorToEndString() {
-        // Creates range object
-        var setpos = document.createRange();
-          
-        // Creates object for selection
-        var set = window.getSelection();
-          
-        // Set start position of range
-        setpos.setStart(getLastCommand().childNodes[0], getLastCommand().textContent.length);
-          
-        // Collapse range within its boundary points
-        // Returns boolean
-        setpos.collapse(true);
-          
-        // Remove all ranges set
-        set.removeAllRanges();
-          
-        // Add range with respect to range object.
-        set.addRange(setpos);
-          
-        // Set cursor on focus
-        getLastCommand().focus();
+        // if text field not empty
+        if (getLastCommand().childNodes.length > 0) {
+            // Creates range object
+            var setpos = document.createRange();
+            
+            // Creates object for selection
+            var set = window.getSelection();
+            
+            // Set start position of range
+            setpos.setStart(getLastCommand().childNodes[0], getLastCommand().textContent.length);
+            
+            // Collapse range within its boundary points
+            // Returns boolean
+            setpos.collapse(true);
+            
+            // Remove all ranges set
+            set.removeAllRanges();
+            
+            // Add range with respect to range object.
+            set.addRange(setpos);
+            
+            // Set cursor on focus
+            getLastCommand().focus();
+        }
     }
 
     function historyNext() {
