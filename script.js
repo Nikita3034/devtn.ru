@@ -132,6 +132,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // default margin left for cursor
         getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
+
+        // default position
+        terminal.style.left = '100px';
+        terminal.style.top = '100px';
     }
 
     function initMoveMouseCommand() {
@@ -301,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
         terminal.style.zIndex = 1000;
 
         function moveAt(event) {
-            terminal.style.left = event.pageX - shiftX + terminal.offsetWidth / 2 + 'px';
+            terminal.style.left = event.pageX - shiftX + 'px';
             terminal.style.top = event.pageY - shiftY + 'px';
         }
 
@@ -333,38 +337,115 @@ document.addEventListener('DOMContentLoaded', function() {
     init();
 
     const BORDER_SIZE = 4;
-    const panel = document.querySelector(".terminal");
 
     let m_pos;
     function resizeLeft(e){
         const dx = m_pos - e.x;
         m_pos = e.x;
-        var newWidth = parseInt(getComputedStyle(panel, '').width) + dx;
-        panel.style.width = (newWidth >= document.querySelector('body').offsetWidth ? document.querySelector('body').offsetWidth : newWidth) + 'px';
+        var newWidth = parseFloat(getComputedStyle(terminal, '').width, 10) + dx;
+        terminal.style.right = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(terminal, '').left, 10) - terminal.offsetWidth + 'px';
+        terminal.style.left = "";
+        if (parseFloat(getComputedStyle(terminal).left, 10) < 0) {
+            terminal.style.width = terminal.offsetWidth + 'px';
+            terminal.style.left = "0px";
+        } else {
+            terminal.style.width = newWidth + 'px';
+        }
     }
 
     function resizeRight(e){
         const dx = m_pos - e.x;
         m_pos = e.x;
-        var newWidth = parseInt(getComputedStyle(panel, '').width) - dx;
-        panel.style.width = (newWidth >= document.querySelector('body').offsetWidth ? document.querySelector('body').offsetWidth : newWidth) + 'px';
+        var newWidth = parseFloat(getComputedStyle(terminal, '').width, 10) - dx;
+        terminal.style.left = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(terminal, '').right, 10) - terminal.offsetWidth + 'px';
+        terminal.style.right = "";
+        if (parseFloat(getComputedStyle(terminal).right, 10) < 0) {
+            terminal.style.width = terminal.offsetWidth + 'px';
+            terminal.style.right = "0px";
+        } else {
+            terminal.style.width = newWidth + 'px';
+        }
     }
 
-    panel.addEventListener("mousedown", function(e){
+    function resizeTop(e){
+        const dy = m_pos - e.y;
+        m_pos = e.y;
+        var newHeight = parseFloat(getComputedStyle(terminal, '').height, 10) + dy;
+        terminal.style.bottom = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(terminal, '').top, 10) - terminal.offsetHeight + 'px';
+        terminal.style.top = "";
+        if (parseFloat(getComputedStyle(terminal).top, 10) < 0) {
+            terminal.style.height = terminal.offsetHeight + 'px';
+            terminal.style.top = "0px";
+        } else {
+            terminal.style.height = newHeight + 'px';
+        }
+    }
+
+    function resizeBottom(e){
+        const dy = m_pos - e.y;
+        m_pos = e.y;
+        var newHeight = parseFloat(getComputedStyle(terminal, '').height, 10) - dy;
+        terminal.style.top = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(terminal, '').bottom, 10) - terminal.offsetHeight + 'px';
+        terminal.style.bottom = "";
+        if (parseFloat(getComputedStyle(terminal).bottom, 10) < 0) {
+            terminal.style.height = terminal.offsetHeight + 'px';
+            terminal.style.bottom = "0px";
+        } else {
+            terminal.style.height = newHeight + 'px';
+        }
+    }
+
+    terminal.addEventListener("mousedown", function(e){
         e.preventDefault();
+
+        // not full window
+        if (terminal.classList.contains('full-window')) {
+            return;
+        }
+
         if (e.offsetX < BORDER_SIZE) {
             m_pos = e.x;
             document.addEventListener("mousemove", resizeLeft, false);
         }
 
-        if (e.offsetX > (panel.offsetWidth - 4)) {
+        if (e.offsetX > (terminal.offsetWidth - 4)) {
             m_pos = e.x;
             document.addEventListener("mousemove", resizeRight, false);
+        }
+    }, false);
+
+    document.querySelector('.resize-top').addEventListener("mousedown", function(e){
+        e.preventDefault();
+
+        // not full window
+        if (terminal.classList.contains('full-window')) {
+            return;
+        }
+
+        if (e.offsetY < BORDER_SIZE) {
+            m_pos = e.y;
+            document.addEventListener("mousemove", resizeTop, false);
+        }
+    }, false);
+
+    document.querySelector('.resize-bottom').addEventListener("mousedown", function(e){
+        e.preventDefault();
+
+        // not full window
+        if (terminal.classList.contains('full-window')) {
+            return;
+        }
+
+        if (e.offsetY < (terminal.offsetHeight - 4)) {
+            m_pos = e.y;
+            document.addEventListener("mousemove", resizeBottom, false);
         }
     }, false);
 
     document.addEventListener("mouseup", function(){
         document.removeEventListener("mousemove", resizeLeft, false);
         document.removeEventListener("mousemove", resizeRight, false);
+        document.removeEventListener("mousemove", resizeTop, false);
+        document.removeEventListener("mousemove", resizeBottom, false);
     }, false);
 });
