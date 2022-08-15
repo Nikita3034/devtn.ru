@@ -18,8 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var borderStyle = '4px solid #fff';
 
     var bar = document.querySelector('.bar');
-    var terminal = document.querySelector('.terminal');
     var screen = document.querySelector('.screen');
+
+    // add first command line
+    screen.innerHTML += lineHTML;
+
+    function getTerminal() {
+        return document.querySelector('.terminal');
+    }
 
     function getLastLine() {
         return document.querySelectorAll('.line')[document.querySelectorAll('.line').length - 1];
@@ -50,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('.button.red').addEventListener('click', closeTerminal);
 
     function closeTerminal() {
-        document.querySelector('.terminal').remove();
+        getTerminal().remove();
     }
 
     // button hide
@@ -59,13 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openHideTerminal() {
         if (document.querySelector('.terminal.hide') !== null) {
-            document.querySelector('.terminal').classList.remove('hide');
+            getTerminal().classList.remove('hide');
             document.querySelector('.app-bar').classList.add('hide');
 
             getLastCommand().focus();
             positionCursorToEndString();
         } else {
-            document.querySelector('.terminal').classList.add('hide');
+            getTerminal().classList.add('hide');
             document.querySelector('.app-bar').classList.remove('hide');
         }
     }
@@ -75,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openToFullWindow() {
         if (document.querySelector('.terminal.full-window') !== null) {
-            document.querySelector('.terminal').classList.remove('full-window');
+            getTerminal().classList.remove('full-window');
             document.querySelector('.bar .button.green').classList.remove('full-window');
         } else {
-            document.querySelector('.terminal').classList.add('full-window');
+            getTerminal().classList.add('full-window');
             document.querySelector('.bar .button.green').classList.add('full-window');
         }
 
@@ -88,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('div:not(.app-bar)').addEventListener('click', event => {
         clearInterval(intervalFlashCursor);
 
-        if (document.querySelector('.terminal') !== null) {
+        if (getTerminal() !== null) {
             getLastCursor().style.border = borderStyle;
 
             if (event.target.closest('.terminal')) {
@@ -276,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // move terminal animation
     bar.onmousedown = function(event) {
         // not full window
-        if (terminal.classList.contains('full-window')) {
+        if (getTerminal().classList.contains('full-window')) {
             return;
         }
 
@@ -290,19 +296,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        var coords = getCoords(terminal);
+        var coords = getCoords(getTerminal());
         var shiftX = event.pageX - coords.left;
         var shiftY = event.pageY - coords.top;
 
-        terminal.style.position = 'absolute';
-        document.body.appendChild(terminal);
+        getTerminal().style.position = 'absolute';
+        document.body.appendChild(getTerminal());
         moveAt(event);
 
-        terminal.style.zIndex = 1000;
+        getTerminal().style.zIndex = 1000;
 
         function moveAt(event) {
-            terminal.style.left = event.pageX - shiftX + 'px';
-            terminal.style.top = event.pageY - shiftY + 'px';
+            getTerminal().style.left = event.pageX - shiftX + 'px';
+            getTerminal().style.top = event.pageY - shiftY + 'px';
         }
 
         document.onmousemove = function(event) {
@@ -338,64 +344,64 @@ document.addEventListener('DOMContentLoaded', function() {
     function resizeLeft(e){
         const dx = m_pos - e.x;
         m_pos = e.x;
-        var newWidth = parseFloat(getComputedStyle(terminal, '').width, 10) + dx;
-        terminal.style.right = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(terminal, '').left, 10) - terminal.offsetWidth + 'px';
-        terminal.style.left = "";
-        if (parseFloat(getComputedStyle(terminal).left, 10) < 0) {
-            terminal.style.width = terminal.offsetWidth + 'px';
-            terminal.style.left = "0px";
+        var newWidth = parseFloat(getComputedStyle(getTerminal(), '').width, 10) + dx;
+        getTerminal().style.right = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(getTerminal(), '').left, 10) - getTerminal().offsetWidth + 'px';
+        getTerminal().style.left = "";
+        if (parseFloat(getComputedStyle(getTerminal()).left, 10) < 0) {
+            getTerminal().style.width = getTerminal().offsetWidth + 'px';
+            getTerminal().style.left = "0px";
         } else {
-            terminal.style.width = newWidth + 'px';
+            getTerminal().style.width = newWidth + 'px';
         }
     }
 
     function resizeRight(e){
         const dx = m_pos - e.x;
         m_pos = e.x;
-        var newWidth = parseFloat(getComputedStyle(terminal, '').width, 10) - dx;
-        terminal.style.left = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(terminal, '').right, 10) - terminal.offsetWidth + 'px';
-        terminal.style.right = "";
-        if (parseFloat(getComputedStyle(terminal).right, 10) < 0) {
-            terminal.style.width = terminal.offsetWidth + 'px';
-            terminal.style.right = "0px";
+        var newWidth = parseFloat(getComputedStyle(getTerminal(), '').width, 10) - dx;
+        getTerminal().style.left = document.querySelector('body').offsetWidth - parseFloat(getComputedStyle(getTerminal(), '').right, 10) - getTerminal().offsetWidth + 'px';
+        getTerminal().style.right = "";
+        if (parseFloat(getComputedStyle(getTerminal()).right, 10) < 0) {
+            getTerminal().style.width = getTerminal().offsetWidth + 'px';
+            getTerminal().style.right = "0px";
         } else {
-            terminal.style.width = newWidth + 'px';
+            getTerminal().style.width = newWidth + 'px';
         }
     }
 
     function resizeTop(e){
         const dy = m_pos - e.y;
         m_pos = e.y;
-        var newHeight = parseFloat(getComputedStyle(terminal, '').height, 10) + dy;
-        terminal.style.bottom = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(terminal, '').top, 10) - terminal.offsetHeight + 'px';
-        terminal.style.top = "";
-        if (parseFloat(getComputedStyle(terminal).top, 10) < 0) {
-            terminal.style.height = terminal.offsetHeight + 'px';
-            terminal.style.top = "0px";
+        var newHeight = parseFloat(getComputedStyle(getTerminal(), '').height, 10) + dy;
+        getTerminal().style.bottom = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(getTerminal(), '').top, 10) - getTerminal().offsetHeight + 'px';
+        getTerminal().style.top = "";
+        if (parseFloat(getComputedStyle(getTerminal()).top, 10) < 0) {
+            getTerminal().style.height = getTerminal().offsetHeight + 'px';
+            getTerminal().style.top = "0px";
         } else {
-            terminal.style.height = newHeight + 'px';
+            getTerminal().style.height = newHeight + 'px';
         }
     }
 
     function resizeBottom(e){
         const dy = m_pos - e.y;
         m_pos = e.y;
-        var newHeight = parseFloat(getComputedStyle(terminal, '').height, 10) - dy;
-        terminal.style.top = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(terminal, '').bottom, 10) - terminal.offsetHeight + 'px';
-        terminal.style.bottom = "";
-        if (parseFloat(getComputedStyle(terminal).bottom, 10) < 0) {
-            terminal.style.height = terminal.offsetHeight + 'px';
-            terminal.style.bottom = "0px";
+        var newHeight = parseFloat(getComputedStyle(getTerminal(), '').height, 10) - dy;
+        getTerminal().style.top = document.querySelector('body').offsetHeight - parseFloat(getComputedStyle(getTerminal(), '').bottom, 10) - getTerminal().offsetHeight + 'px';
+        getTerminal().style.bottom = "";
+        if (parseFloat(getComputedStyle(getTerminal()).bottom, 10) < 0) {
+            getTerminal().style.height = getTerminal().offsetHeight + 'px';
+            getTerminal().style.bottom = "0px";
         } else {
-            terminal.style.height = newHeight + 'px';
+            getTerminal().style.height = newHeight + 'px';
         }
     }
 
-    terminal.addEventListener("mousedown", function(e){
+    getTerminal().addEventListener("mousedown", function(e){
         e.preventDefault();
 
         // not full window
-        if (terminal.classList.contains('full-window')) {
+        if (getTerminal().classList.contains('full-window')) {
             return;
         }
 
@@ -404,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.addEventListener("mousemove", resizeLeft, false);
         }
 
-        if (e.offsetX > (terminal.offsetWidth - 4)) {
+        if (e.offsetX > (getTerminal().offsetWidth - 4)) {
             m_pos = e.x;
             document.addEventListener("mousemove", resizeRight, false);
         }
@@ -414,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         // not full window
-        if (terminal.classList.contains('full-window')) {
+        if (getTerminal().classList.contains('full-window')) {
             return;
         }
 
@@ -428,11 +434,11 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         // not full window
-        if (terminal.classList.contains('full-window')) {
+        if (getTerminal().classList.contains('full-window')) {
             return;
         }
 
-        if (e.offsetY < (terminal.offsetHeight - 4)) {
+        if (e.offsetY < (getTerminal().offsetHeight - 4)) {
             m_pos = e.y;
             document.addEventListener("mousemove", resizeBottom, false);
         }
