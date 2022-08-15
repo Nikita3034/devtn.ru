@@ -132,10 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // default margin left for cursor
         getLastCursor().style.marginLeft = getLastBeforeWidth() + 'px';
-
-        // default position
-        terminal.style.left = '100px';
-        terminal.style.top = '100px';
     }
 
     function initMoveMouseCommand() {

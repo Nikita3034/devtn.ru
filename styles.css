@@ -7,10 +7,12 @@ body {
     background-color: grey;
     position: relative;
     font-family: monospace;
-    margin:0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 .terminal {
-    box-shadow: 10px 10px 10px 0 rgb(0 0 0 / 25%);
     width: 900px;
     height: 600px;
     position: absolute;
