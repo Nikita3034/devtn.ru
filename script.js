@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         document.onmousemove = function(event) {
-            // coords = getCoords(getTerminal());
+            coords = getCoords(getTerminal());
             moveAt(event);
 
             clearInterval(intervalFlashCursor);
