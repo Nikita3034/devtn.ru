@@ -320,28 +320,8 @@ document.addEventListener('DOMContentLoaded', function() {
         getTerminal().style.zIndex = 1000;
 
         function moveAt(event) {
-            switch (true) {
-                case coords.left <= 0:
-                    getTerminal().style.left = '1px';
-                    getTerminal().style.top = event.pageY - shiftY + 'px';
-                    break;
-                case coords.top <= 0:
-                    getTerminal().style.left = event.pageX - shiftX + 'px';
-                    getTerminal().style.top = '1px';
-                    break;
-                case (document.querySelector('body').offsetWidth - getTerminal().offsetWidth - coords.left) <= 0:
-                    getTerminal().style.left = (document.querySelector('body').offsetWidth - getTerminal().offsetWidth - 1) + 'px';
-                    getTerminal().style.top = event.pageY - shiftY + 'px';
-                    break;
-                case (document.querySelector('body').offsetHeight - getTerminal().offsetHeight - coords.top) <= 0:
-                    getTerminal().style.left = event.pageX - shiftX + 'px';
-                    getTerminal().style.top = (document.querySelector('body').offsetHeight - getTerminal().offsetHeight - 1) + 'px';
-                    break;
-                default:
-                    getTerminal().style.left = event.pageX - shiftX + 'px';
-                    getTerminal().style.top = event.pageY - shiftY + 'px';
-                    break;
-            }
+            getTerminal().style.left = event.pageX - shiftX + 'px';
+            getTerminal().style.top = event.pageY - shiftY + 'px';
         }
 
         document.onmousemove = function(event) {
@@ -355,6 +335,12 @@ document.addEventListener('DOMContentLoaded', function() {
         bar.onmouseup = function() {
             document.onmousemove = null;
             bar.onmouseup = null;
+
+            clearInterval(intervalFlashCursor);
+            getLastCommand().focus();
+            flashCursor();
+
+            positionCursorToEndString();
         };
     }
 
