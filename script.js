@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var maxLengthCommand = 70;
 
     var lineHTML = '<div class="line">' +
-        '<span class="before">guest@devtn.ru:~$</span>' +
+        '<span class="before">guest@devtn.ru:/menu$</span>' +
         '<span class="command" role="textbox" contenteditable autofocus></span>' +
         '<span class="cursor"></span>' +
     '</div>';
@@ -53,14 +53,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // button close
-    document.querySelector('.button.red').addEventListener('click', closeTerminal);
+    // document.querySelector('.button.red').addEventListener('click', closeTerminal);
 
     function closeTerminal() {
         getTerminal().remove();
     }
 
     // button hide
-    document.querySelector('.button.yellow').addEventListener('click', openHideTerminal);
+    // document.querySelector('.button.yellow').addEventListener('click', openHideTerminal);
     document.querySelector('.app-bar').addEventListener('click', openHideTerminal);
 
     function openHideTerminal() {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // button open to full window
-    document.querySelector('.button.green').addEventListener('click', openToFullWindow);
+    // document.querySelector('.button.green').addEventListener('click', openToFullWindow);
 
     function openToFullWindow() {
         if (document.querySelector('.terminal.full-window') !== null) {
@@ -191,6 +191,19 @@ document.addEventListener('DOMContentLoaded', function() {
         addToHistory();
 
         getLastCursor().style.border = 'none';
+
+        var lastCommand = getLastCommand().textContent;
+
+        switch (lastCommand) {
+            case 'ls -l':
+                var menu = document.querySelector('.menu').cloneNode(true);
+                screen.innerHTML += menu.outerHTML;
+                document.querySelectorAll('.menu')[document.querySelectorAll('.menu').length - 1].style.display = 'block';
+                break;
+            default:
+                screen.innerHTML += '<div class="command-404">command not found</div>';
+                break;
+        }
         screen.innerHTML += lineHTML;
 
         init();

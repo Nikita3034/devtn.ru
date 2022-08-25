@@ -3,9 +3,11 @@
 <head>
     <title>devtn.ru</title>
     <link rel="stylesheet" href="./styles.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
-    <div class="terminal">
+    <div class="terminal full-window">
 
         <span class="resize-top"></span>
 
@@ -25,9 +27,259 @@
         </div>
 
         <div class="screen">
-            <!-- <div class="info">
-                hello
-            </div> -->
+            <div class="header">
+                <div class="title">
+                    U NIKITAXA
+                </div>
+                <hr>
+                <div class="description">
+                    Для того, чтобы увидеть полное меню введите команду <b>ls -l</b>
+                </div>
+            </div>
+            <div class="menu" style="display: none;">
+                <div class="item">
+                    <div class="name">
+                        Наименование
+                    </div>
+                    <div clas="price">
+                        Порция
+                    </div>
+                </div>
+                <div class="sub-title first-element">
+                    Пиво
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Первореченское
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~500 мл
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Белое
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~500 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Виски
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            James
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~50 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Водка
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Белые росы
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~50 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Вино
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Какое-то вино
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~300 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Коктейли
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Виски кола
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~400 мл
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Водка сок
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~400 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Напитки
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Кола
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~400 мл
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Сок
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~400 мл
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Закуски
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Фисташки
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~100 гр
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Сухарики
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~200 гр
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Семечки
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~100 гр
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Сыр косичкой
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~200 гр
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    Еда
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Пицца
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~200 гр
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Картошка фри
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~100 гр
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Крылья КФС
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~200 гр
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-title">
+                    На посошок
+                </div>
+                <div class="list">
+                    <div class="item">
+                        <div class="name">
+                            Чай (черный / зеленый)
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~300 мл
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Кофе
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            ~300 мл
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Арбуз
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            1 кусок
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Пряники
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            1 шт
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="name">
+                            Овсяное печенье
+                        </div>
+                        <hr>
+                        <div clas="price">
+                            1 шт
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <span class="resize-bottom"></span>
