@@ -19,7 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     /* min-width: 400px; */
-    min-width: 100%;
+    min-width: 400px;
     min-height: 200px;
 }
 .terminal::before {
@@ -215,7 +215,6 @@ body {
     max-width: 100%;
     grid-gap: 5px;
     padding-left: 6px;
-    margin-bottom: 4px;
 }
 .line:first-child {
     margin-top: 6px;
@@ -277,32 +276,4 @@ body {
 
 .screen .header .description {
     text-align: center;
-}
-
-.screen .menu {
-    color: #fff;
-    padding-left: 6px;
-    padding-right: 6px;
-}
-
-.screen .menu .sub-title {
-    font-size: 17px;
-    text-align: center;
-}
-
-.screen .menu .sub-title:not(.first-element) {
-    margin-top: 10px;
-}
-
-.screen .menu .item {
-    display: flex;
-    justify-content: space-between;
-}
-
-.screen .menu .item hr {
-    flex-grow: 0.97;
-    border-top: none;
-    position: relative;
-    bottom: -2px;
-    border-bottom: 1px dotted #8c8b8b;
 }
