@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+    nginx:
+        restart: unless-stopped
+        container_name: ${PROJECT_NAME}_nginx
+        build: ./docker/nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./docker/nginx/conf/local:/etc/nginx/conf.d
+            - ${PROJECTS_PATH}:/var/www
+        networks:
+            - default
+
+networks:
+    default:
+        name: network_default
